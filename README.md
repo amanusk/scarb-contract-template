@@ -3,7 +3,11 @@
 Simple template of a Cairo 1.0 contract built with Scarb
 The example shows a contract that receives an ERC20 address and a list of addresses to send tokens to
 
-This repo requires `Scarb 0.5.0-alpha2`
+This repo requires `Scarb 0.5.0-alpha4`
+
+Install Scarb with 
+
+`curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | bash -s -- -v 0.5.0-alpha.4`
 
 ### Disclaimer
 This is just an example, more features will be added as the language is improved while keeping it minimal
