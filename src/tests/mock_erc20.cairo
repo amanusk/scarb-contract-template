@@ -19,18 +19,18 @@ mod MockERC20 {
     }
 
     #[event]
-    #[derive(Drop, starknet::Event)]
+    #[derive(Copy, Drop, PartialEq, starknet::Event)]
     enum Event {
         Transfer: Transfer,
         Approval: Approval,
     }
-    #[derive(Drop, starknet::Event)]
+    #[derive(Copy, Drop, PartialEq, starknet::Event)]
     struct Transfer {
         from: ContractAddress,
         to: ContractAddress,
         value: u256,
     }
-    #[derive(Drop, starknet::Event)]
+    #[derive(Copy, Drop, PartialEq, starknet::Event)]
     struct Approval {
         owner: ContractAddress,
         spender: ContractAddress,

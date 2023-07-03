@@ -3,15 +3,18 @@ mod erc20_test {
     use starknet::testing::{set_caller_address, set_contract_address, set_block_timestamp};
 
     use token_sender::tests::mock_erc20::MockERC20;
+    use token_sender::tests::mock_erc20::MockERC20::{Event, Transfer};
     use token_sender::erc20::erc20::{IERC20Dispatcher, IERC20DispatcherTrait};
 
     use starknet::{
         contract_address_const, get_block_info, ContractAddress, Felt252TryIntoContractAddress,
         TryInto, Into, OptionTrait, class_hash::Felt252TryIntoClassHash
     };
+    use starknet::storage_read_syscall;
+    use token_sender::tests::test_utils::{assert_eq};
 
     use starknet::syscalls::deploy_syscall;
-    use array::ArrayTrait;
+    use array::{ArrayTrait, SpanTrait, ArrayTCloneImpl};
     use result::ResultTrait;
     use serde::Serde;
 
@@ -89,6 +92,30 @@ mod erc20_test {
         erc20.transfer(recipient, amount);
         assert(erc20.balance_of(account) == initial_supply - amount, 'Balance should be reduced');
         assert(erc20.balance_of(recipient) == amount, 'Balance be equal to amount');
+    }
+
+    #[test]
+    #[available_gas(1000000)]
+    fn test_emit_events() {
+        let (erc20_address, account, initial_supply) = setup();
+        let mut erc20 = IERC20Dispatcher { contract_address: erc20_address };
+
+        let recipient: ContractAddress = contract_address_const::<2>();
+
+        let amount: u256 = u256 { low: 1000_u128, high: 0_u128 };
+
+        set_contract_address(account);
+        erc20.transfer(recipient, amount);
+
+        // First event is the initial deploy transfer
+        let (mut keys, mut data) = starknet::testing::pop_log(erc20_address).unwrap();
+        // Second event is the transfer above
+        let (mut keys, mut data) = starknet::testing::pop_log(erc20_address).unwrap();
+        assert_eq(
+            @starknet::Event::deserialize(ref keys, ref data).unwrap(),
+            @Event::Transfer(Transfer { from: account, to: recipient, value: amount }),
+            'event == Transfer'
+            );
     }
 
     fn get_timestamp() -> u64 {
