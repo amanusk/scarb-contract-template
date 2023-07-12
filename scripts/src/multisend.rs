@@ -7,7 +7,6 @@ use starknet::{
     accounts::{Account, Call, SingleOwnerAccount},
     core::types::{BlockId, BlockTag, FieldElement},
     core::utils::get_selector_from_name,
-    macros::felt,
     providers::{
         jsonrpc::{HttpTransport, JsonRpcClient},
         Provider,
@@ -28,10 +27,10 @@ pub async fn multisend() -> Result<()> {
     )
     .unwrap();
 
-    let usdc_address = FieldElement::from_hex_be(
-        "0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426",
-    )
-    .unwrap();
+    // let usdc_address = FieldElement::from_hex_be(
+    //     "0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426",
+    // )
+    // .unwrap();
 
     let token_sender_address = FieldElement::from_hex_be(
         "0x0134774cc62dd610ac2280730561e1462868c558c1e6ce56b046358a8610c7ef",

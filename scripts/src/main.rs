@@ -24,7 +24,10 @@ enum Action {
         casm_file_path: String,
     },
     #[clap(name = "deploy")]
-    Deploy,
+    Deploy {
+        #[clap(short, long, help = "The sierra file path to declare")]
+        sierra_file_path: String,
+    },
     #[clap(name = "approve")]
     Approve,
     #[clap(name = "multisend")]
@@ -45,7 +48,7 @@ async fn run_command(action: Action) -> Result<()> {
             sierra_file_path,
             casm_file_path,
         } => declare(sierra_file_path, casm_file_path).await,
-        Action::Deploy => deploy().await,
+        Action::Deploy { sierra_file_path } => deploy(sierra_file_path).await,
         Action::Approve => approve().await,
         Action::Multisend => multisend().await,
     }

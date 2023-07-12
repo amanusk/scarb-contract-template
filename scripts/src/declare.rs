@@ -41,11 +41,7 @@ pub async fn declare(sierra_file_path: String, casm_file_path: String) -> Result
     let signer = LocalWallet::from(SigningKey::from_secret_scalar(
         FieldElement::from_hex_be(envfile.get("PRIVATE_KEY").unwrap()).unwrap(),
     ));
-    // let address = FieldElement::from_hex_be(envfile.get("ACCOUNT_ADDRESS").unwrap()).unwrap();
-    let address = FieldElement::from_hex_be(
-        "0x5465aa79114f0415f95100cafeb4640b17bce2653810903738ac6c1a7694b6c",
-    )
-    .unwrap();
+    let address = FieldElement::from_hex_be(envfile.get("ACCOUNT_ADDRESS").unwrap()).unwrap();
 
     // TODO: set testnet/mainnet based on provider
     let mut account = SingleOwnerAccount::new(provider, signer, address, chain_id);
@@ -59,6 +55,7 @@ pub async fn declare(sierra_file_path: String, casm_file_path: String) -> Result
 
     let result = account
         .declare(Arc::new(flattened_class), compiled_class_hash)
+        .fee_estimate_multiplier(3.0)
         .send()
         .await
         .unwrap();

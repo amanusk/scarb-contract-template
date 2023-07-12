@@ -15,7 +15,7 @@ use starknet::{
     signers::{LocalWallet, SigningKey},
 };
 
-pub async fn deploy() -> Result<()> {
+pub async fn deploy(sierra_file_path: String) -> Result<()> {
     let envfile = EnvFile::new(&Path::new(".env"))?;
 
     let provider = JsonRpcClient::new(HttpTransport::new(
@@ -25,10 +25,8 @@ pub async fn deploy() -> Result<()> {
     let chain_id = provider.chain_id().await.unwrap();
 
     // Sierra class artifact. Output of the `starknet-compile` command
-    let contract_artifact: SierraClass = serde_json::from_reader(
-        std::fs::File::open("./../target/dev/compiled_TokenSender.sierra.json").unwrap(),
-    )
-    .unwrap();
+    let contract_artifact: SierraClass =
+        serde_json::from_reader(std::fs::File::open(sierra_file_path).unwrap()).unwrap();
 
     let class_hash = contract_artifact.class_hash().unwrap();
     println!("Contract Hash: {:#064x}", class_hash);
@@ -50,6 +48,7 @@ pub async fn deploy() -> Result<()> {
     let contract_factory = ContractFactory::new(class_hash, account);
     let result = contract_factory
         .deploy(&vec![], felt!("1123"), false)
+        .fee_estimate_multiplier(3.0)
         .send()
         .await
         .expect("Unable to deploy contract");

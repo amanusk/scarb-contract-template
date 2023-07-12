@@ -7,7 +7,6 @@ use starknet::{
     accounts::{Account, Call, SingleOwnerAccount},
     core::types::{BlockId, BlockTag, FieldElement},
     core::utils::get_selector_from_name,
-    macros::felt,
     providers::{
         jsonrpc::{HttpTransport, JsonRpcClient},
         Provider,
