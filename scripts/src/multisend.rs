@@ -23,7 +23,7 @@ pub async fn multisend() -> Result<()> {
     let chain_id = provider.chain_id().await.unwrap();
 
     let dai_address = FieldElement::from_hex_be(
-        "0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9",
+        "0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
     )
     .unwrap();
 
@@ -33,7 +33,7 @@ pub async fn multisend() -> Result<()> {
     // .unwrap();
 
     let token_sender_address = FieldElement::from_hex_be(
-        "0x0134774cc62dd610ac2280730561e1462868c558c1e6ce56b046358a8610c7ef",
+        "0x02058f6050454efcde895decc689bc9458571091f5314b45b9aa123a9f00eb4a",
     )
     .unwrap();
 

@@ -23,17 +23,17 @@ pub async fn approve() -> Result<()> {
     let chain_id = provider.chain_id().await.unwrap();
 
     let dai_address = FieldElement::from_hex_be(
-        "0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9",
+        "0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
     )
     .unwrap();
 
     let usdc_address = FieldElement::from_hex_be(
-        "0x005a643907b9a4bc6a55e9069c4fd5fd1f5c79a22470690f75556c4736e34426",
+        "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
     )
     .unwrap();
 
-    let remover_address = FieldElement::from_hex_be(
-        "0x0134774cc62dd610ac2280730561e1462868c558c1e6ce56b046358a8610c7ef",
+    let sender_address = FieldElement::from_hex_be(
+        "0x02058f6050454efcde895decc689bc9458571091f5314b45b9aa123a9f00eb4a",
     )
     .unwrap();
 
@@ -55,7 +55,7 @@ pub async fn approve() -> Result<()> {
         to: dai_address,
         selector: get_selector_from_name("approve").unwrap(),
         calldata: vec![
-            remover_address,
+            sender_address,
             FieldElement::from_hex_be("0xffffffffffffffffffffffffffffffff").unwrap(),
             FieldElement::from_hex_be("0xffffffffffffffffffffffffffffffff").unwrap(),
         ],
@@ -65,7 +65,7 @@ pub async fn approve() -> Result<()> {
         to: usdc_address,
         selector: get_selector_from_name("approve").unwrap(),
         calldata: vec![
-            remover_address,
+            sender_address,
             FieldElement::from_hex_be("0xffffffffffffffffffffffffffffffff").unwrap(),
             FieldElement::from_hex_be("0xffffffffffffffffffffffffffffffff").unwrap(),
         ],
@@ -73,6 +73,7 @@ pub async fn approve() -> Result<()> {
 
     let result = account
         .execute(vec![approve_dai_call, approve_usdc_call])
+        .fee_estimate_multiplier(3.0)
         .send()
         .await
         .unwrap();
