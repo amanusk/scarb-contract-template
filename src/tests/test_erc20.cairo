@@ -115,7 +115,7 @@ mod erc20_test {
             @starknet::Event::deserialize(ref keys, ref data).unwrap(),
             @Event::Transfer(Transfer { from: account, to: recipient, value: amount }),
             'event == Transfer'
-            );
+        );
     }
 
     fn get_timestamp() -> u64 {
