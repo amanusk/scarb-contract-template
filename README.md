@@ -1,3 +1,5 @@
+This is now archived. Use [Starknet-Foundry tempalte](https://github.com/amanusk/starknet-foundry-template) instead
+
 # Cairo Contract template with Scarb ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg) ![example workflow](https://github.com/amanusk/scarb-contract-template/actions/workflows/scarb.yml/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/auditless/cairo-template/blob/main/LICENSE)
 
 Simple template of a Cairo 1.0 contract built with Scarb
